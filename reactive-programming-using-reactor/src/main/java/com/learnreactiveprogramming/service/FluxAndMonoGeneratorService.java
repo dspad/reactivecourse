@@ -14,7 +14,10 @@ public class FluxAndMonoGeneratorService {
 	 */
 	public Flux<String> namesFlux(){
 		//Simula una chiamata a db o servizio remoto
-		return Flux.fromIterable(List.of("alex", "ben", "chloe")); 
+		return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+				//log consente di tenere traccia di ogni passaggio eseguito nel flux
+				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
+				.log(); 
 	}
 	
 	/**
@@ -23,7 +26,9 @@ public class FluxAndMonoGeneratorService {
 	 * @return
 	 */
 	public Mono<String> nameMono() {
-		return Mono.just("alice");
+		return Mono.just("alice")
+				//Idem per il mono
+				.log();
 	}
 	
    public static void main(String[] args) {
