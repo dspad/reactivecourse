@@ -126,5 +126,29 @@ public class FluxAndMonoGeneratorService {
 				.log();
 	}
 
+	/**
+	 * Esempio di uso di flatMap su un Mono
+	 * @param stringLength
+	 * @return
+	 */
+	public Mono<List<String>> namesMono_flatmap(int stringLength) {
+		return Mono.just("alice")
+				.map(String::toUpperCase)
+				.filter(s->s.length() > stringLength)
+				.flatMap(this::splitStringMono)
+				.log();
+	}
+
+	/**
+	 * Creazione di un Mono con una lista di stringhe a partire da una stringa
+	 * @param s
+	 * @return
+	 */
+	private Mono<List<String>> splitStringMono(String s) {
+		var chararray = s.split("");
+		var charlist = List.of(chararray);
+		return Mono.just(charlist);
+	}
+
 }
 
