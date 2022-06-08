@@ -43,4 +43,16 @@ class FluxAndMonoGeneratorServiceTest {
 				.expectNext("alex","ben","chloe")
 				.verifyComplete();
 	}
+
+	@Test
+	void namesFluxFlatMapTest() {
+		int stringLength = 3;
+
+		Flux<String> names = fluxAndMonoGeneratorService.namesFluxFlatMap(stringLength);
+
+		StepVerifier.create(names)
+				.expectNext("A","L","E","X","C","H","L","O","E")
+				.verifyComplete();
+
+	}
 }
