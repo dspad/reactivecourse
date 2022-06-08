@@ -129,7 +129,7 @@ public class FluxAndMonoGeneratorService {
 	/**
 	 * Esempio di uso di flatMap su un Mono
 	 * @param stringLength
-	 * @return
+	 * @return restituisce un altro Mono
 	 */
 	public Mono<List<String>> namesMono_flatmap(int stringLength) {
 		return Mono.just("alice")
@@ -148,6 +148,19 @@ public class FluxAndMonoGeneratorService {
 		var chararray = s.split("");
 		var charlist = List.of(chararray);
 		return Mono.just(charlist);
+	}
+
+	/**
+	 * Esempio di utilizzo di flatMapMany su un Mono
+	 * @param stringLength
+	 * @return Restituisce un Flux
+	 */
+	public Flux<String> namesMono_flatmapmany(int stringLength) {
+		return Mono.just("alice")
+				.map(String::toUpperCase)
+				.filter(s->s.length() > stringLength)
+				.flatMapMany(this::splitString)
+				.log();
 	}
 
 }
