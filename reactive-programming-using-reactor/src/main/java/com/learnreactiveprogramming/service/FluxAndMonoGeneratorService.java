@@ -203,5 +203,25 @@ public class FluxAndMonoGeneratorService {
 				.log();
 	}
 
+	/**
+	 * Esempio di utilizzo di concat per concatenare due o piu' Flux/Mono
+	 * @return
+	 */
+	public Flux<String> explore_concat(){
+		var abcFlux = Flux.just("A","B","C");
+		var defFlux = Flux.just("D","E","F");
+		return Flux.concat(abcFlux,defFlux).log();
+	}
+
+	/**
+	 * Esempio di utilizzo di concatWith per concatenare due Mono/Flux
+	 * @return restiuisce un Flux
+	 */
+    public Flux<String> explore_concatWith(){
+		var aMono = Mono.just("A");
+		var bMono = Mono.just("B");
+		return aMono.concatWith(bMono);
+	}
+
 }
 

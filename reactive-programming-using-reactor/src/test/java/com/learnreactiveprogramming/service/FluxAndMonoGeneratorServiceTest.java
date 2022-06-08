@@ -147,4 +147,22 @@ class FluxAndMonoGeneratorServiceTest {
 				//.expectNextCount(9)
 				.verifyComplete();
 	}
+
+	@Test
+	void explore_concat() {
+		Flux<String> concatStrings = fluxAndMonoGeneratorService.explore_concat();
+
+		StepVerifier.create(concatStrings)
+				.expectNext("A","B","C","D","E","F")
+				.verifyComplete();
+	}
+
+	@Test
+	void explore_concatWith() {
+		Flux<String> concatStrings = fluxAndMonoGeneratorService.explore_concatWith();
+
+		StepVerifier.create(concatStrings)
+				.expectNext("A","B")
+				.verifyComplete();
+	}
 }
