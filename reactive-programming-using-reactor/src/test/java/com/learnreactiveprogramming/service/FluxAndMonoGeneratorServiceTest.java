@@ -25,10 +25,12 @@ class FluxAndMonoGeneratorServiceTest {
 	@Test
 	void namesFluxMapTest() {
 
-		Flux<String> names = fluxAndMonoGeneratorService.namesFluxMap();
+		int stringLength = 3;
+
+		Flux<String> names = fluxAndMonoGeneratorService.namesFluxMap(stringLength);
 
 		StepVerifier.create(names)
-				.expectNext("ALEX","BEN","CHLOE")
+				.expectNext("4-ALEX","5-CHLOE")
 				.verifyComplete();
 	}
 
