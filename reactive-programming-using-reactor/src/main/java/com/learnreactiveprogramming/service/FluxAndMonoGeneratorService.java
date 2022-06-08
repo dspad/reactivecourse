@@ -223,5 +223,19 @@ public class FluxAndMonoGeneratorService {
 		return aMono.concatWith(bMono);
 	}
 
+	/**
+	 * Esempio di utilizzo di merge che, a differenza di concat, non concatena ma restiutisce
+	 * un flux merge-ato in base all'esecuzione degli stream
+	 * E' possibile anche usare mergeWith (commentato alla fine)
+	 * @return
+	 */
+	public Flux<String> explore_merge(){
+		var abcFlux = Flux.just("A","B","C")
+				.delayElements(Duration.ofMillis(100)); //passa al prossimo elemento tra 100 ms
+		var defFlux = Flux.just("D","E","F")
+				.delayElements(Duration.ofMillis(125)); //passa al prossimo elemento tra 125 ms
+		return Flux.merge(abcFlux,defFlux).log();
+		//return abcFlux.mergeWith(defFlux);
+	}
 }
 
