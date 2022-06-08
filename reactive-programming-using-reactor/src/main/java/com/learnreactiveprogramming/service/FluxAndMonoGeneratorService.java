@@ -3,6 +3,7 @@ package com.learnreactiveprogramming.service;
 import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -160,6 +161,24 @@ public class FluxAndMonoGeneratorService {
 				.map(String::toUpperCase)
 				.filter(s->s.length() > stringLength)
 				.flatMapMany(this::splitString)
+				.log();
+	}
+
+	/**
+	 * Esempio di utilizzo di transform
+	 * @param stringLength
+	 * @return
+	 */
+	public Flux<String> namesFluxTransform(int stringLength){
+		//Inserisci il map e il filter in una function che prende in input un Flux<String> e restituisce un Flux<String>
+		Function<Flux<String>,Flux<String>> filtermap = name -> name.map(String::toUpperCase)
+																.filter(s -> s.length() > stringLength);
+
+		return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+				.transform(filtermap) //Applica la function
+				.flatMap(s-> splitString(s)) //Splitta ALEX,CHLOE in A,L,E,X,C,H,L,O,E
+				//log consente di tenere traccia di ogni passaggio eseguito nel flux
+				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
 				.log();
 	}
 
