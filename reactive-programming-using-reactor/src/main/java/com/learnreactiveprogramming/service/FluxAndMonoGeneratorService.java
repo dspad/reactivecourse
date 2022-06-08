@@ -33,7 +33,19 @@ public class FluxAndMonoGeneratorService {
 				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
 				.log();
 	}
-	
+
+	/**
+	 * Dimostrazione che i valori all'interno di un flux sono immutabili
+	 * map() restituisce un altro Flux anziche' sovrascrivere
+	 * @return
+	 */
+	public Flux<String> namesFluxImmutabilty(){
+		//Simula una chiamata a db o servizio remoto
+		var namesFlux =  Flux.fromIterable(List.of("alex", "ben", "chloe"));
+		    namesFlux.map(String::toUpperCase);
+		return namesFlux;
+	}
+
 	/**
 	 * Esempio di Mono applicato su stringa
 	 * Un mono puo' pubblicare da 0 a 1 elemento
