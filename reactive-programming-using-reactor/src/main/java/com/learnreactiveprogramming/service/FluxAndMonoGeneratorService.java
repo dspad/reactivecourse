@@ -237,5 +237,14 @@ public class FluxAndMonoGeneratorService {
 		return Flux.merge(abcFlux,defFlux).log();
 		//return abcFlux.mergeWith(defFlux);
 	}
+
+	public Flux<String> explore_mergeSequential(){
+		var abcFlux = Flux.just("A","B","C")
+				.delayElements(Duration.ofMillis(100)); //passa al prossimo elemento tra 100 ms
+		var defFlux = Flux.just("D","E","F")
+				.delayElements(Duration.ofMillis(125)); //passa al prossimo elemento tra 125 ms
+		return Flux.mergeSequential(abcFlux,defFlux).log();
+		//return abcFlux.mergeWith(defFlux);
+	}
 }
 

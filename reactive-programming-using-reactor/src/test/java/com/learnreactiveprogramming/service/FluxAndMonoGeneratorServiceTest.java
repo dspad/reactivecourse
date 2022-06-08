@@ -175,4 +175,14 @@ class FluxAndMonoGeneratorServiceTest {
 				.verifyComplete();
 
 	}
+
+	@Test
+	void explore_mergeSequential() {
+		Flux<String> mergeValues = fluxAndMonoGeneratorService.explore_mergeSequential();
+
+		StepVerifier.create(mergeValues)
+				.expectNext("A","B","C","D","E","F")
+				.verifyComplete();
+
+	}
 }
