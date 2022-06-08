@@ -1,6 +1,8 @@
 package com.learnreactiveprogramming.service;
 
+import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,9 +55,33 @@ public class FluxAndMonoGeneratorService {
 				.log();
 	}
 
+	/**
+	 * Esempio di utilizzo di flatMap in modo asincrono
+	 * @param stringLength
+	 * @return
+	 */
+	public Flux<String> namesFluxFlatMap_async(int stringLength){
+		//Simula una chiamata a db o servizio remoto
+		return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+				.map(String::toUpperCase)
+				//.map(s -> s.toUpperCase()) //come sopra
+				.filter(s -> s.length() > stringLength) //solo le stringhe con lunghezza > 3
+				.flatMap(s-> splitString_withDelay(s)) //Splitta ALEX,CHLOE in A,L,E,X,C,H,L,O,E
+				//log consente di tenere traccia di ogni passaggio eseguito nel flux
+				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
+				.log();
+	}
+
 	public Flux<String> splitString(String name){
 		var charArray = name.split("");
 		return Flux.fromArray(charArray);
+	}
+
+	public Flux<String> splitString_withDelay(String name){
+		var charArray = name.split("");
+		var delay = new Random().nextInt(1000);
+		return Flux.fromArray(charArray)
+				.delayElements(Duration.ofMillis(delay));
 	}
 
 	/**
