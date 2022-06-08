@@ -165,7 +165,7 @@ public class FluxAndMonoGeneratorService {
 	}
 
 	/**
-	 * Esempio di utilizzo di transform
+	 * Esempio di utilizzo di transform e defaultIfEmpty
 	 * @param stringLength
 	 * @return
 	 */
@@ -179,6 +179,27 @@ public class FluxAndMonoGeneratorService {
 				.flatMap(s-> splitString(s)) //Splitta ALEX,CHLOE in A,L,E,X,C,H,L,O,E
 				//log consente di tenere traccia di ogni passaggio eseguito nel flux
 				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
+				.defaultIfEmpty("default") //se a seguito del transform il Flux e' vuoto, di default inserisci una stringa
+				.log();
+	}
+
+	/**
+	 * Esempio di utilizzo di SwitchIfEmpty
+	 * @param stringLength
+	 * @return
+	 */
+	public Flux<String> namesFluxTransform_SwitchIfEmpty(int stringLength){
+		//Inserisci il map e il filter in una function che prende in input un Flux<String> e restituisce un Flux<String>
+		Function<Flux<String>,Flux<String>> filtermap = name -> name.map(String::toUpperCase)
+				.filter(s -> s.length() > stringLength);
+
+		var defaultflux = Flux.just("default")
+				.transform(filtermap)
+				.flatMap(s-> splitString(s));
+
+		return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+				.transform(filtermap) //Applica la function
+				.switchIfEmpty(defaultflux) //se a seguito del transform il Flux e' vuoto, switcha su un altro Flux
 				.log();
 	}
 
