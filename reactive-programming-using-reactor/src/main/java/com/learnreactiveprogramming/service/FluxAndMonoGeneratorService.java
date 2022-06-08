@@ -72,6 +72,25 @@ public class FluxAndMonoGeneratorService {
 				.log();
 	}
 
+	/**
+	 * Esempio di utilizzo di concatMap.
+	 * Rispetto a flatMap, concatMap preserva l'ordinamento dei valori anche in caso di inserimento di
+	 * modalita' asincrone
+	 * @param stringLength
+	 * @return
+	 */
+	public Flux<String> namesFluxConcatMap(int stringLength){
+		//Simula una chiamata a db o servizio remoto
+		return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+				.map(String::toUpperCase)
+				//.map(s -> s.toUpperCase()) //come sopra
+				.filter(s -> s.length() > stringLength) //solo le stringhe con lunghezza > 3
+				.concatMap(s-> splitString_withDelay(s)) //Splitta ALEX,CHLOE in A,L,E,X,C,H,L,O,E
+				//log consente di tenere traccia di ogni passaggio eseguito nel flux
+				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
+				.log();
+	}
+
 	public Flux<String> splitString(String name){
 		var charArray = name.split("");
 		return Flux.fromArray(charArray);

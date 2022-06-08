@@ -68,4 +68,17 @@ class FluxAndMonoGeneratorServiceTest {
 				.verifyComplete();
 
 	}
+
+	@Test
+	void namesFluxConcatMap() {
+
+		int stringLength = 3;
+
+		Flux<String> names = fluxAndMonoGeneratorService.namesFluxFlatMap_async(stringLength);
+
+		StepVerifier.create(names)
+				.expectNext("A","L","E","X","C","H","L","O","E")
+				//.expectNextCount(9)
+				.verifyComplete();
+	}
 }
