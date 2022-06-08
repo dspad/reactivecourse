@@ -19,6 +19,20 @@ public class FluxAndMonoGeneratorService {
 				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
 				.log(); 
 	}
+
+	/**
+	 * Esempio di Flux di stringhe con utilizzo di map()
+	 * @return
+	 */
+	public Flux<String> namesFluxMap(){
+		//Simula una chiamata a db o servizio remoto
+		return Flux.fromIterable(List.of("alex", "ben", "chloe"))
+				.map(String::toUpperCase)
+				//.map(s -> s.toUpperCase()) //come sopra
+				//log consente di tenere traccia di ogni passaggio eseguito nel flux
+				//Gli eventi tracciati sono onSubscribe, request, onNext (per ogni elemento) e onComplete
+				.log();
+	}
 	
 	/**
 	 * Esempio di Mono applicato su stringa
@@ -41,6 +55,10 @@ public class FluxAndMonoGeneratorService {
 	   //Richiamo il mono ed eseguo il subscribe del singolo elemento
 	   fluxAndMonoGeneratorService.nameMono()
 			.subscribe(name -> System.out.println("Mono Name is "+name));
+
+	   //Richiamo il flux e eseguo il subscribe di ogni elemento del flux
+	   fluxAndMonoGeneratorService.namesFluxMap()
+			   .subscribe(name -> System.out.println("Name is "+name));
    }
 
 }
