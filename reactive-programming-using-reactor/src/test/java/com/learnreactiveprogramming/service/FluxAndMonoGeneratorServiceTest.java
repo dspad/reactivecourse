@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -184,5 +185,45 @@ class FluxAndMonoGeneratorServiceTest {
 				.expectNext("A","B","C","D","E","F")
 				.verifyComplete();
 
+	}
+
+	@Test
+	void explore_zip() {
+		Flux<String> zipValues = fluxAndMonoGeneratorService.explore_zip();
+
+		StepVerifier.create(zipValues)
+				.expectNext("AD","BE","CF")
+				.verifyComplete();
+
+	}
+
+	@Test
+	void explore_zipMap() {
+		Flux<String> zipValues = fluxAndMonoGeneratorService.explore_zipMap();
+
+		StepVerifier.create(zipValues)
+				.expectNext("AD14", "BE25", "CF36")
+				.verifyComplete();
+
+	}
+
+	@Test
+	void explore_zipWith() {
+		Flux<String> zipValues = fluxAndMonoGeneratorService.explore_zipWith();
+
+		StepVerifier.create(zipValues)
+				.expectNext("AD","BE","CF")
+				.verifyComplete();
+
+	}
+
+	@Test
+	void explore_zipWithMono() {
+
+		Mono<String> zipWithValues = fluxAndMonoGeneratorService.explore_zipWithMono();
+
+		StepVerifier.create(zipWithValues)
+				.expectNext("BA")
+				.verifyComplete();
 	}
 }

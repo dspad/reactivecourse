@@ -246,5 +246,60 @@ public class FluxAndMonoGeneratorService {
 		return Flux.mergeSequential(abcFlux,defFlux).log();
 		//return abcFlux.mergeWith(defFlux);
 	}
+
+	/**
+	 * Esempio di zip(): esegui fino a 8 Flux indicando all'interno di un Lambda l'operazione da eseguire sugli elementi
+	 * @return
+	 */
+	public Flux<String> explore_zip(){
+		var abcFlux = Flux.just("A","B","C");
+		var defFlux = Flux.just("D","E","F");
+		//concatena gli elementi n dei due flux
+		return Flux.zip(abcFlux, defFlux, (first,second) -> first+second);//AD, BE, CF
+
+	}
+
+	/**
+	 * Esempio di zip(): utilizzo con map
+	 * @return
+	 */
+	public Flux<String> explore_zipMap(){
+		var abcFlux = Flux.just("A","B","C");
+		var defFlux = Flux.just("D","E","F");
+		var _123Flux = Flux.just("1","2","3");
+		var _456Flux = Flux.just("4","5","6");
+
+		//concatena gli elementi n dei due flux
+		return Flux.zip(abcFlux, defFlux, _123Flux,_456Flux)
+				//Accedi agli elementi utilizzando Tuple4
+				.map(t4 -> t4.getT1()+t4.getT2()+t4.getT3()+t4.getT4())//AD14, BE25, CF36
+				.log();
+
+	}
+
+	/**
+	 * Esempio di utilizzo di zipWith()
+	 * @return
+	 */
+	public Flux<String> explore_zipWith(){
+		var abcFlux = Flux.just("A","B","C");
+		var defFlux = Flux.just("D","E","F");
+		//concatena gli elementi n dei due flux
+		return abcFlux.zipWith(defFlux, (first,second) -> first+second);//AD, BE, CF
+
+	}
+
+
+	/**
+	 * Esempio di utilizzo di zipWith() con i Mono
+	 * @return
+	 */
+	public Mono<String> explore_zipWithMono(){
+		var aMono = Mono.just("A");
+		var bMono = Mono.just("B");
+		return aMono.zipWith(bMono)
+				.map(t2 -> t2.getT2()+t2.getT1())
+				.log();  //BA
+	}
 }
 
